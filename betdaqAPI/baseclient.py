@@ -1,5 +1,10 @@
 import zeep
 
+"""
+    This is the base for the readonly_client and later the secure Client
+    by creating this object using the service function from the zeep Client
+    calls can be made to the api with the right parameters
+"""
 class BaseClient:
 
     def __init__(self, username, password):
@@ -10,6 +15,7 @@ class BaseClient:
         self.readonly_client = self.initialise_wsdl()
 
     def initialise_wsdl(self):
+        # just initialises the readonly_client as of now can expand to secure
         readonly_client = zeep.Client(wsdl=self.wsdl_file, settings=self.settings)
         readonly_client.set_default_soapheaders({'ExternalApiHeader':self.external_headers})
         return readonly_client
@@ -20,4 +26,4 @@ class BaseClient:
                 "languageCode": 'en',
                 "username": self.username,
                 "password": self.password,
-                "applicationIdentifier": None}
+                "applicationIdentifier": None }
