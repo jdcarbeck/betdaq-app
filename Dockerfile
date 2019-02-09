@@ -7,4 +7,4 @@ COPY . /betdaq-app
 #Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 #Run app when the container launches
-CMD ["python", "betdaq.py"]
+CMD ["python", "run.py"]

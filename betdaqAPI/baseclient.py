@@ -6,27 +6,13 @@ class BaseClient:
         self.username = username
         self.password = password
         self.wsdl_file = 'http://api.betdaq.com/v2.0/API.wsdl'
-        self.readonly_types = None
-        self.secure_types = None
-        self.secure_client, self.readonly_client = self.initialise_wsdl()
-        self.initialise_type_factories()
+        self.settings = zeep.Settings(strict=False)
+        self.readonly_client = self.initialise_wsdl()
 
     def initialise_wsdl(self):
-        secure_client = zeep.Client(
-            wsdl=self.wsdl_file, service_name='SecureService',
-            port_name='SecureService', strict=False
-        )
-        secure_client.set_default_soapheaders({'ExternalApiHeader':self.external_headers})
-        readonly_client = zeep.Client(
-            wsdl=self.wsdlfile, service_name='ReadOnlyService',
-            port_name='ReadOnlyService', strict=False
-        )
+        readonly_client = zeep.Client(wsdl=self.wsdl_file, settings=self.settings)
         readonly_client.set_default_soapheaders({'ExternalApiHeader':self.external_headers})
-        return secure_client, readonly_client
-
-    def initialise_type_factories(self):
-        self.secure_types = self.secure_client.type_factory('ns0')
-        self.readonly_types = self.readonly_client.type_factory('ns0')
+        return readonly_client
 
     @property
     def external_headers(self):
