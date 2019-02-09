@@ -6,6 +6,8 @@ Engineering Project at Trinity College Dublin
 The requirements for the project are listed in `requirements.txt` but it is suggested
 that docker be installed and used as it will ensure the best environment for running the project
 
+**RECOMENED:** read the *brief* documentation of zeep [here](https://python-zeep.readthedocs.io/en/master/index.html) 
+
 ### Running without Docker
 1. Make sure that you have Python 3.6.2 installed using `python3 --version`
 2. Using `pip install` install all that is listed in `requirements.txt`
