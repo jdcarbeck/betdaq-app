@@ -11,6 +11,5 @@ class: ReadOnly
 
     #create a function for every readonly in API doc 25-36 and check parameters
     #11 functions to be implemented TODO: Tuesday
-    
+
     def listTopLevelEvents(self):
-        #check parameters and throw errors appropriate
