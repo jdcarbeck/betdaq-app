@@ -12,13 +12,13 @@ class BaseClient:
         self.password = password
         self.wsdl_file = 'http://api.betdaq.com/v2.0/API.wsdl'
         self.settings = zeep.Settings(strict=False)
-        self.readonly_client = self.initialise_wsdl()
+        self.client = self.initialise_wsdl()
 
     def initialise_wsdl(self):
         # just initialises the readonly_client as of now can expand to secure
-        readonly_client = zeep.Client(wsdl=self.wsdl_file, settings=self.settings)
-        readonly_client.set_default_soapheaders({'ExternalApiHeader':self.external_headers})
-        return readonly_client
+        client = zeep.Client(wsdl=self.wsdl_file, settings=self.settings)
+        client.set_default_soapheaders({'ExternalApiHeader':self.external_headers})
+        return client
 
     @property
     def external_headers(self):
