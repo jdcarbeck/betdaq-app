@@ -9,7 +9,10 @@ class ReadOnly:
     
     def __init__(self, username, password):
         base = BaseClient(username, password)
-        
+
+        def ListTopLevelEvents(self):
+            base.ListTopLevelEvents
+            
 
 
     #create a client for the method below to use
