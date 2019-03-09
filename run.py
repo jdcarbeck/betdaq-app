@@ -1,16 +1,16 @@
-from betdaqAPI.readOnly import ReadOnly
+from betdaqAPI.readOnly.readOnly import ReadOnly
 from betdaqAPI.baseclient import BaseClient
 import config
 
 def main():
-    # creates a base to use the readonly_client and eventually secure client
+    # creates a base to use the client
     base = BaseClient("username", "password")
-    #sample of creating a call, requesting top events from api
 
-    # print(readonly.ListTopLevelEvents())
+    read_client = ReadOnly(BaseClient(config.username, config.password))
 
+    output = read_client.listTopLevelEvents()
+    print(output)
     # Ideally this is how we call functions
-    # base.ListTopLevelEvents()
 
 if __name__ == "__main__":
     main()
