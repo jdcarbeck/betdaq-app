@@ -1,15 +1,14 @@
 import zeep
+from betdaqAPI.baseclient import BaseClient
 #all the readonly go in here
 #this clase baseclient and use the readonly part of it
 
 #implement testing (BONUS!!)
 
-class ReadOnly:
-    def __init__(self, client):
-        self.client = client
-        
+class ReadOnly(BaseClient):
+
     def listTopLevelEvents(self):
-        return self.client.service.listTopLevelEvents()
+        return self.client.service.ListTopLevelEvents()
 
     #create a client for the method below to use
 
