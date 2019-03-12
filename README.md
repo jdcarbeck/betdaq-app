@@ -16,3 +16,6 @@ that docker be installed and used as it will ensure the best environment for run
 ### Using Docker
 1. Build the image in the root directory using `docker build -t betdaq .`
 2. Run the image using `docker run betdaq`
+
+##Project Plan
+1. build python app that stores information for the current events 
