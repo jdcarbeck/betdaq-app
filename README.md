@@ -18,4 +18,8 @@ that docker be installed and used as it will ensure the best environment for run
 2. Run the image using `docker run betdaq`
 
 ##Project Plan
-1. build python app that stores information for the current events 
+1. Finish python api implementation
+2. Build a database that can be dynamically refreshed from run.py
+3. Build a react front end that displays stored data
+3. Connect react front end to python backend run in docker instance
+4. Build a shell script for running the project.
