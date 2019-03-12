@@ -15,14 +15,14 @@ class ReadOnly(BaseClient):
     def listSelectionsChangedSince(self):
         return self.client.service.ListSelectionsChangedSince()
 
-    def listMarketWithdrawalHistory(self, long Market):
-        return self.client.service.ListMarketWithdrawalHistory()
+    def listMarketWithdrawalHistory(self, Market):
+        return self.client.service.ListMarketWithdrawalHistory(Market)
 
-    def getPrices(self, String currency, MoneyAmount thresholdAmount, int numberForPricesRequired,int numberAgainstPricesRequired):
-        return self.client.service.GetPrices()
+    def getPrices(self, currency, thresholdAmount, numberForPricesRequired, numberAgainstPricesRequired):
+        return self.client.service.GetPrices(currency, thresholdAmount, numberForPricesRequired, numberAgainstPricesRequired)
 
-    def getOddsLadder(self, PriceFormat priceFormat):
-        return self.client.service.GetOddsLadder()
+    def getOddsLadder(self, priceFormat):
+        return self.client.service.GetOddsLadder(priceFormat)
 
       #create a client for the method below to use
 
