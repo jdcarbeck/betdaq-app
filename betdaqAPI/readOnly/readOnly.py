@@ -9,12 +9,20 @@ class ReadOnly(BaseClient):
 
     def listTopLevelEvents(self):
         return self.client.service.ListTopLevelEvents()
-
+  
+	def GetSPEnabledMarketsInformation(self):
+        return self.client.service.GetSPEnabledMarketsInformation()
+		
+	def GetCurrentSelectionSequenceNumber(self):
+        return self.client.service.GetCurrentSelectionSequenceNumber()
+		
+	def ListSelectionTrades(self, selectionId, fromTradeId):
+        return self.client.service.ListSelectionTrades(selectionId, fromTradeId)
+	
     #create a client for the method below to use
 
     #create a function for every readonly in API doc 25-36 and check parameters
     #11 functions to be implemented TODO: THURSDAY
     #TODO: CIAN 8-11
     #TODO: BRIAN 5-8
-    #TODO: JOESEPH 1-4
-    
+    #TODO: JOESEPH 1-4stSelectionTrades
