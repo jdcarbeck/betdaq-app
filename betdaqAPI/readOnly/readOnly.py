@@ -7,8 +7,24 @@ from betdaqAPI.baseclient import BaseClient
 
 class ReadOnly(BaseClient):
 
-    def listTopLevelEvents(self):
-        return self.client.service.ListTopLevelEvents()
+    def listTopLevelEvents(self, wantPlayMarkets):
+        return self.client.service.ListTopLevelEvents(wantPlayMarkets)
+
+    def GetEventSubTreeNoSelections(self, handle, wantDirectDescendantsOnly, wantPlayMarkets)
+        return self.client.service.GetEventSubTreeNoSelections(handle, wantDirectDescendantsOnly, wantPlayMarkets)
+
+    def GetEventSubTreeWithSelections(self, handle, wantPlayMarkets)
+        return self.client.service.GetEventSubTreeNoSelections(handle, wantPlayMarkets)
+
+    def GetMarketInformation(self, handle)
+        return self.client.service.GetMarketInformation(handle)
+
+    def ListSelectionsChangedSince(self, selectionSequenceNumber)
+        return self.client.service.ListSelectionsChangedSince(selectionSequenceNumber)
+
+        
+
+
 
     #create a client for the method below to use
 
@@ -17,4 +33,3 @@ class ReadOnly(BaseClient):
     #TODO: CIAN 8-11
     #TODO: BRIAN 5-8
     #TODO: JOESEPH 1-4
-    
