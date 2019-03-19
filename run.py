@@ -5,7 +5,7 @@ def main():
     # creates a base to use the client
     read_client = ReadOnly(config.username, "")
 
-    print(read_client.listTopLevelEvents())
+    print(read_client.listMarketWithdrawalHistory(1000))
     # Ideally this is how we call functions
 
 if __name__ == "__main__":

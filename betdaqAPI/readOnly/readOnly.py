@@ -12,14 +12,17 @@ class ReadOnly(BaseClient):
 
 
 #TODO: BRIAN 5-8
-    def listSelectionsChangedSince(self):
-        return self.client.service.ListSelectionsChangedSince()
+    def listSelectionsChangedSince(self,selectionSequenceNumber):
+        return self.client.service.ListSelectionsChangedSince(selectionSequenceNumber)
 
-    def listMarketWithdrawalHistory(self, Market):
-        return self.client.service.ListMarketWithdrawalHistory(Market)
+    def listMarketWithdrawalHistory(self, handle):
+        return self.client.service.ListMarketWithdrawalHistory(handle)
 
-    def getPrices(self, currency, thresholdAmount, numberForPricesRequired, numberAgainstPricesRequired):
-        return self.client.service.GetPrices(currency, thresholdAmount, numberForPricesRequired, numberAgainstPricesRequired)
+    def getPrices(self, currency, thresholdAmount, numberForPricesRequired, numberAgainstPricesRequired,handle,wantMarketMatchedAmount,wantSelectionsMatchedAmounts,wantSelectionMatchedDetails):
+        return self.client.service.GetPrices(currency, thresholdAmount, numberForPricesRequired, numberAgainstPricesRequired,handle,wantMarketMatchedAmount,wantSelectionsMatchedAmounts,wantSelectionMatchedDetails)
+
+   # def getPrices(self, currency, thresholdAmount, numberForPricesRequired, numberAgainstPricesRequired,handle):
+    #    return self.client.service.GetPrices(currency, thresholdAmount, numberForPricesRequired, numberAgainstPricesRequired,handle)
 
     def getOddsLadder(self, priceFormat):
         return self.client.service.GetOddsLadder(priceFormat)
