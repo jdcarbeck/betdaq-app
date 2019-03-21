@@ -2,6 +2,8 @@ import datetime
 
 import zeep
 from betdaqAPI.baseclient import BaseClient
+import betdaqAPI.utils as utils
+from betdaqAPI.readOnly import parsers
 
 #all the readonly go in here
 #this clase baseclient and use the readonly part of it
@@ -21,3 +23,9 @@ class ReadOnly(BaseClient):
             'time_sent' : time_sent,
             'time_rec' : datetime.datetime.utcnow(),
         }
+
+    def get_live_sports(self):
+        params = utils.clean_locals(locals())
+        response = self.request('ListTopLevelEvents', params)
+        data = self.process_response(response, datetime.datetime.utcnow(), 'EventClassifiers')
+        return [parsers.parse_sports(sport) for sport in utils.list_check(data.get('data', []))] if data.get('data') else []
