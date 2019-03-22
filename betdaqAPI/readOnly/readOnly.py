@@ -5,10 +5,6 @@ from betdaqAPI.baseclient import BaseClient
 import betdaqAPI.utils as utils
 from betdaqAPI.readOnly import parsers
 
-#all the readonly go in here
-#this clase baseclient and use the readonly part of it
-
-#implement testing (BONUS!!)
 
 class ReadOnly(BaseClient):
 
@@ -29,3 +25,12 @@ class ReadOnly(BaseClient):
         response = self.request('ListTopLevelEvents', params)
         data = self.process_response(response, datetime.datetime.utcnow(), 'EventClassifiers')
         return [parsers.parse_sports(sport) for sport in utils.list_check(data.get('data', []))] if data.get('data') else []
+
+    def get_markets(self, market_ids):
+        date_time_sent = datetime.datetime.utcnow()
+        params = self.client.readonly_types['GetMarketInformationRequest'](
+            _value_1=[{'MarketIds': m_id} for m_id in utils.list_check(market_ids)]
+        )
+        response = self.request('GetMarketInformation', params)
+        data = self.process_response(response, date_time_sent, 'Markets')
+        return data
