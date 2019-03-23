@@ -6,9 +6,8 @@ def main():
     client = BaseClient(config.username, config.password)
     resp = client.readonly.list_top_level_events()
     print(resp)
-    # resp = read_client.get_all_events()
-    # print(resp)
-    # read_client.get_live_sports()
+    resp = client.secure.get_account_balances()
+    print(resp)
     
 if __name__ == "__main__":
     main()
