@@ -10,7 +10,6 @@ def main():
     run2(client,GreyHoundRacingID)
     
 
-
 def runStrat(client,id):
     
     _event_Classifier = "EventClassifiers"
