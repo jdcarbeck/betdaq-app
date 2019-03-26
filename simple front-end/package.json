@@ -1,0 +1,14 @@
+{
+  "name": "cs3013",
+  "version": "1.0.0",
+  "description": "BetDaq Sample Application",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
