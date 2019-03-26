@@ -1,30 +1,43 @@
-import zeep
+from suds.client import Client as SudsClient
+from betdaqAPI.endpoints import readOnly, secure
 
-"""
-    This is the base for the readonly_client and later the secure Client
-    by creating this object using the service function from the zeep Client
-    calls can be made to the api with the right parameters
-"""
+
 class BaseClient:
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, language='en', application_identifier=None):
+        """
+        WSDL client header.
+        :param username: Betdaq username
+        :type str
+        :param password: Betdaw password
+        :type str
+        """
         self.username = username
         self.password = password
-        self.wsdl_file = 'http://api.betdaq.com/v2.0/API.wsdl'
-        self.settings = zeep.Settings(strict=False)
-        self.client = self.initialise_wsdl()
+        self.url_readonly = 'https://api.betdaq.com/v2.0/ReadOnlyService.asmx?WSDL'
+        self.url_secure = 'https://api.betdaq.com/v2.0/Secure/SecureService.asmx?WSDL'
+        self.version = '2.0'
+        self.language = language
+        self.application_identifier = application_identifier
+        self._readonly_client = SudsClient(self.url_readonly)
+        self._add_headers(False)
+        self._secure_client = SudsClient(self.url_secure)
+        self._add_headers(True)
 
-    def initialise_wsdl(self):
-        # just initialises the readonly_client as of now can expand to secure
-        client = zeep.Client(wsdl=self.wsdl_file, settings=self.settings)
-        client.set_default_soapheaders({'ExternalApiHeader':self.external_headers})
-        return client
+        self.readonly = readOnly.Endpoint(self._readonly_client)
+        self.secure = secure.Endpoint(self._secure_client)
 
-    @property
-    def external_headers(self):
-        return{ "version": 2.0,
-                "languageCode": 'en',
-                "username": self.username,
-                "password": self.password,
-                "applicationIdentifier": None }
+ 
+    def _add_headers(self, is_secure=True):
+        if is_secure:
+            client = self._secure_client
+        else:
+            client = self._readonly_client
+        token = client.factory.create('ExternalApiHeader')
+        token._version = self.version
+        token._username = self.username
+        token._password = self.password
+        token._languageCode = self.language
+        token._applicationIdentifier = self.application_identifier
+        client.set_options(soapheaders=token)
 
