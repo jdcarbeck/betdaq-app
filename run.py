@@ -1,15 +1,29 @@
 from betdaqAPI.baseclient import BaseClient
 from betdaqAPI.enums import MarketStatus
 from betdaqAPI.enums import MarketType
+from betdaqAPI.enums import Polarity
+from betdaqAPI.enums import WithdrawRepriceOption
+from betdaqAPI.enums import OrderKillType
+from datetime import datetime
+from datetime import timedelta
 
+
+import betUtils
 import config
 import time
+
+RunStrat1 = True
 
 def main():
     GreyHoundRacingID = 100008
     client = BaseClient(config.username, config.password)
     # timeAndMarket(client, GreyHoundRacingID)
+    #runBidExecution(client, [15085063])
     runStart(client,GreyHoundRacingID)
+    
+    
+    
+    # activeOrderForID(client, [15047743])
     # runOrderWithMinBal(client,100)
     # print(getGBPAvailableFunds(client))
     # mids = getSportMarketsByType(client, GreyHoundRacingID, MarketType.Win)    
@@ -25,19 +39,87 @@ def runStart(client,SportId):
     print("##### == ", "Getting Market Times", " == #####")
     timeDict = getMarketTimes(client, mids)
     print("##### == ", "Found Market Times", " == #####")
-    print(timeDict)
-
-
-    while(True):
+    print("##### == ", "Program Now Running", " == #####")
+    print("##### == ", "Loop Running Every 10 Seconds", " == #####")
+    
+    while(RunStrat1):
         time.sleep(10)
-        print(getApiTime(client))
+        currTime = getApiTime(client)
+        delList = []
+        for r in timeDict:
+            if (r-currTime).seconds < 120 :
+                runBidExecution(client, timeDict[r])
+                delList.append(r)
+        for tmp in delList:
+            del timeDict[tmp]
+        print("##### == ", "No Markets Found at ",currTime , " == #####")
 
 
-def runOrderWithMinBal(client,minBal,order):
+def runBidExecution(client,bidID):
+    ret = execute(client, bidID,2,5,0.01)
+    return ret
+
+def getNo1DisplayOrderCode(client,bidId):
+    a = client.readonly.get_market_information(bidId)
+    bets = a.get("Markets")[0]
+    selections = bets.get("Selections")
+    for select in selections:
+        if select.get("DisplayOrder") is 1:
+            return select.get("Id")
     return 0
 
-def activeOrderForID(client, id):
+def execute(client,betId,lower,upper,stakeVal):
+    a = client.readonly.get_prices(betId)
+    bets = a.get("MarketPrices")
+    things = bets[0].get("Selections")
+    x = 1
+    for select in things:
+        if x is 1:
+            pricesDict = select.get("ForSidePrices")
+            price = (pricesDict[0].get("Price"))
+            if price < lower:
+                print("##### == ", select.get("Name"),
+                      " price was too low for bounds at = ", price, " == #####")
+                return False
+            if price > upper:
+                print("##### == ", select.get("Name")," price was too high for bounds at = ", price, " == #####")
+                return False
+            
+            print("##### == ", select.get("Name"), " is within bounds at = ", price, " == #####")
+            print("##### == ","Making Order", " == #####")
 
+            # Do Order
+            order = place_order(
+                selection_id= select.get("Id"),
+                stake=stakeVal,
+                price=price+.3,
+                polarity=Polarity.back.value,
+                expected_selection_reset_count=0,
+                expected_withdrawal_sequence_number=0,
+                expires_at=datetime.utcnow() + timedelta(days=1)
+            )
+            print("##### == ","Funds = ",getGBPAvailableFunds(client), " == #####")
+            print("##### == ", "Starting 5 Second Delay to cancel", " == #####")
+            time.sleep(5)
+            print("##### == ", "Sending Order", " == #####")
+            reciept = client.secure.place_orders_with_receipt(orders=[order])
+            print("##### == ", "Order Sent", " == #####")
+            print("##### == ", reciept, " == #####")
+            print("##### == ", "Funds = ", getGBPAvailableFunds(client), " == #####")
+
+            x =0
+            return True
+
+
+
+
+        
+    return True
+
+
+
+def activeOrderForID(client, id):
+    print(client.secure.register_heartbeat())
     return True
 
 def getGBPAvailableFunds(client):
@@ -150,14 +232,43 @@ def getMarketTimes(client, mids):
             id = e.get("Id")
             startTime = e.get("StartTime")
             markets[startTime] = id
-    print(markets)
-    dict(sorted(markets.items()))
     return markets
 
 
+def place_order(
+        selection_id,
+        stake,
+        price,
+        polarity,
+        expected_selection_reset_count,
+        expected_withdrawal_sequence_number,
+        cancel_on_in_running=True,
+        cancel_if_selection_reset=True,
+        expires_at=None,
+        withdrawal_reprice_option=WithdrawRepriceOption.Cancel.value,
+        kill_type= OrderKillType.FillOrKillDontCancel.value,
+        fill_or_kill_threshold=0.0,
+        punter_reference_number=1
+):
+
+    resp = {
+        '_SelectionId': selection_id,
+        '_Stake': stake,
+        '_Price': price,
+        '_Polarity': polarity,
+        '_ExpectedSelectionResetCount': expected_selection_reset_count,
+        '_ExpectedWithdrawalSequenceNumber': expected_withdrawal_sequence_number,
+        '_CancelOnInRunning': cancel_on_in_running,
+        '_CancelIfSelectionReset': cancel_if_selection_reset,
+        '_WithdrawalRepriceOption': withdrawal_reprice_option,
+        '_KillType': kill_type,
+        '_FillOrKillThreshold': fill_or_kill_threshold,
+        '_PunterReferenceNumber': punter_reference_number
+    }
+    if expires_at is not None:
+        resp['_ExpiresAt'] = expires_at
+
+    return resp
 
 if __name__ == "__main__":
     main()
-
-
-
