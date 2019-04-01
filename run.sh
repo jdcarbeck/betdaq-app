@@ -3,7 +3,7 @@
 #run the appropriate 
 if [ "$1" == "install" ]; then
     echo "### Running install ###"
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
 
 fi
 
