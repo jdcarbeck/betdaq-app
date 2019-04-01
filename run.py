@@ -7,26 +7,20 @@ from betdaqAPI.enums import OrderKillType
 from datetime import datetime
 from datetime import timedelta
 
-
-import betUtils
 import config
 import time
 
 RunStrat1 = True
+LOWER = 2
+UPPER = 5
+STAKE_VAL = 0.01
+
 
 def main():
     GreyHoundRacingID = 100008
     client = BaseClient(config.username, config.password)
-    # timeAndMarket(client, GreyHoundRacingID)
-    #runBidExecution(client, [15085063])
     runStart(client,GreyHoundRacingID)
     
-    
-    
-    # activeOrderForID(client, [15047743])
-    # runOrderWithMinBal(client,100)
-    # print(getGBPAvailableFunds(client))
-    # mids = getSportMarketsByType(client, GreyHoundRacingID, MarketType.Win)    
 
 def runStart(client,SportId):
     #Getting Sport Markets
@@ -56,7 +50,7 @@ def runStart(client,SportId):
 
 
 def runBidExecution(client,bidID):
-    ret = execute(client, bidID,2,5,0.01)
+    ret = execute(client, bidID, LOWER, UPPER, STAKE_VAL)
     return ret
 
 def getNo1DisplayOrderCode(client,bidId):
@@ -68,7 +62,7 @@ def getNo1DisplayOrderCode(client,bidId):
             return select.get("Id")
     return 0
 
-def execute(client,betId,lower,upper,stakeVal):
+def execute(client, betId, lower, upper, stakeVal):
     a = client.readonly.get_prices(betId)
     bets = a.get("MarketPrices")
     things = bets[0].get("Selections")
@@ -109,11 +103,6 @@ def execute(client,betId,lower,upper,stakeVal):
 
             x =0
             return True
-
-
-
-
-        
     return True
 
 
