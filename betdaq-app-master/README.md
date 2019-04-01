@@ -16,3 +16,10 @@ that docker be installed and used as it will ensure the best environment for run
 ### Using Docker
 1. Build the image in the root directory using `docker build -t betdaq .`
 2. Run the image using `docker run betdaq`
+
+## Project Plan
+1. Finish python api implementation
+2. Build a database that can be dynamically refreshed from run.py
+3. Build a react front end that displays stored data
+3. Connect react front end to python backend run in docker instance
+4. Build a shell script for running the project.
