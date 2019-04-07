@@ -6,23 +6,27 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <div>
-        <h1>Betdaq Stragegy</h1>
-        <Clock />
-        <Balence balence="£196.36" />
-        <div >
-          <h3>Stragey 1</h3>
-          <Toggle/>
+    <div class="w3-row-padding w3-padding-64 w3-container">
+      <div class="w3-content">
+            <Clock />
+            <Balence balence="£196.36" />
+            <div>
+              <h3>Strategy 1</h3>
+              <Toggle/>
+            </div>
+            <center>
+              <h2>Active Orders</h2>
+              <List/>
+            </center>
         </div>
-        <h2>Active Orders</h2>
-        <List/>
       </div>
+
     );
   }
 }
 
 function Balence (props) {
-  return <h2>{props.balence}</h2>
+  return <h4>{props.balence}</h4>
 }
 
 
@@ -52,7 +56,7 @@ class Clock extends React.Component {
   render() {
     return (
       <div>
-        <h2>{this.state.date.toLocaleTimeString()}</h2>
+        <h4>{this.state.date.toLocaleTimeString()}</h4>
       </div>
     );
   }
