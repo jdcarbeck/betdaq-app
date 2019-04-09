@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
+import Data from './Data/strat_data.json'
 
 import './App.css';
 
