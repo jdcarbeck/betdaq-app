@@ -43,18 +43,18 @@ def runStrat(client,SportId):
         time.sleep(10)
         AccountBalance = getGBPAvailableFunds(client)
         try:
-            with open('Data/strat_data.json', "rt") as json_file:
+            with open('./betdaq-dashboard/src/Data/strat_data.json', "rt") as json_file:
                 data = json.load(json_file)
-                RunStrat1 = data['Strat Active']
+                RunStrat1 = data['Strat_Active']
                 ActiveOrders = data['Active Orders']
         except IOError:
             print("##### == ", "Could not read strat_data file, starting from scratch", " == #####")
             ActiveOrders = []
 
-        data = {'Strat Active': RunStrat1, 'Account Balance': AccountBalance, 'Active Orders': ActiveOrders}
+        data = {'Strat_Active': RunStrat1, 'Account_Balance': AccountBalance, 'Active_Orders': ActiveOrders}
         print(data)
         print("##### == ", "Overwriting %s" % json_file, " == #####")
-        with open('Data/strat_data.json', "wt") as json_file:
+        with open('./betdaq-dashboard/src/Data/strat_data.json', "wt") as json_file:
             json.dump(data, json_file)
 
         if (RunStrat1):
