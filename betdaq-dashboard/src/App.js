@@ -27,7 +27,7 @@ class App extends Component {
 }
 
 function Balence (props) {
-  return <h4>{props.balence}</h4>
+  return <h4>Account Balance: {props.balence}</h4>
 }
 
 
