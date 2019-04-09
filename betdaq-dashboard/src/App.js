@@ -44,11 +44,7 @@ class Balence extends React.Component {
   }
 
   tick() {
-    var count = this.state.Account_Balence
-    count = count + 5
-    this.setState({
-      Account_Balence: count
-    });
+    this.setState(Data);
   }
   
   render() {
