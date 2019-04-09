@@ -47,6 +47,7 @@ def runStrat(client,SportId):
             RunStrat1 = data['Strat Active']
             ActiveOrders = data['Active Orders']
             data['Account Balance'] = accountBalance
+            json_file.seek(0)
             json.dump(data, json_file)
 
         if (RunStrat1):
