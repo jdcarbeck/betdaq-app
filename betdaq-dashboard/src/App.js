@@ -10,7 +10,7 @@ class App extends Component {
     <div class="w3-row-padding w3-padding-64 w3-container">
       <div class="w3-content">
             <Clock />
-            <Balence balence="£196.36" />
+            <Balence />
             <div>
               <h3>Strategy 1</h3>
               <Toggle/>
@@ -26,8 +26,36 @@ class App extends Component {
   }
 }
 
-function Balence (props) {
-  return <h4>{props.balence}</h4>
+class Balence extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = Data
+  }
+
+  componentDidMount() {
+    this.balenceId = setInterval(
+      () => this.tick(),
+      1000
+    )
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.balenceId)
+  }
+
+  tick() {
+    var count = this.state.Account_Balence
+    count = count + 5
+    this.setState({
+      Account_Balence: count
+    });
+  }
+  
+  render() {
+    return(
+     <h4>£{this.state.Account_Balence}</h4>
+    )
+  }
 }
 
 
@@ -66,7 +94,7 @@ class Clock extends React.Component {
 class Toggle extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {isToggleOn: true};
+    this.state = Data.Strat_Active;
 
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
@@ -90,38 +118,24 @@ class Toggle extends React.Component {
 class List extends React.Component{
   constructor(){
      super();
-     this.state = {
-       data: ["Horse Racing £20 12/1", "Greyhound Racing £10 7/2", 
-              "Golf £30 10/3", "Horse Racing £15 7/2"]
-     }
-     this.delete = this.delete.bind(this);
-  }
-  
-  delete(id){
-     this.setState(prevState => ({
-         data: prevState.data.filter(el => el !== id )
-     }));
+     this.state = Data.Active_Orders
   }
   
   render(){
      return(
-         <Child delete={this.delete} data={this.state.data}/>
+         <Child data={this.state}/>
      );
   }
 }
 
 class Child extends React.Component{
-
-  delete(id){
-      this.props.delete(id);
-  }
   
   render(){
      return(
         <div className = "List">
           {
              this.props.data.map(el=>
-                 <p onClick={this.delete.bind(this, el)}>{el}</p>
+                 <p>{el}</p>
              )
           }
         </div>
