@@ -39,7 +39,7 @@ def runStrat(client,SportId):
     print("##### == ", "Loop Running Every 10 Seconds", " == #####")
     
 
-    while(startLoop):
+    while(StartLoop):
         time.sleep(10)
         accountBalance = getGBPAvailableFunds(client)
         with open('Data/strat_data.json') as json_file:
