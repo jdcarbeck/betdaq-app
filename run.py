@@ -42,12 +42,18 @@ def runStrat(client,SportId):
     while(StartLoop):
         time.sleep(10)
         accountBalance = getGBPAvailableFunds(client)
-        with open('Data/strat_data.json') as json_file:
-            data = json.load(json_file)
-            RunStrat1 = data['Strat Active']
-            ActiveOrders = data['Active Orders']
-            data['Account Balance'] = accountBalance
-            json_file.seek(0)
+        try:
+            with open('Data/strat_data.json', "rt") as json_file:
+                data = json.load(json_file)
+                RunStrat1 = data['Strat Active']
+                ActiveOrders = data['Active Orders']
+        except IOError:
+            print("Could not read strat_data file, starting from scratch")
+            ActiveOrders = []
+
+        data = {'Strat Active': RunStrat1, 'Account Balance': accountBalance, 'Active Orders': ActiveOrders}
+        print("Overwriting %s" % json_file)
+        with open('Data/strat_data.json', "wt") as json_file:
             json.dump(data, json_file)
 
         if (RunStrat1):
