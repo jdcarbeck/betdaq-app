@@ -6,10 +6,12 @@ from betdaqAPI.enums import WithdrawRepriceOption
 from betdaqAPI.enums import OrderKillType
 from datetime import datetime
 from datetime import timedelta
+import json
 
 import config
 import time
 
+StartLoop = True
 RunStrat1 = True
 LOWER = 2
 UPPER = 5
@@ -19,10 +21,10 @@ STAKE_VAL = 0.01
 def main():
     GreyHoundRacingID = 100008
     client = BaseClient(config.username, config.password)
-    runStart(client,GreyHoundRacingID)
+    runStrat(client,GreyHoundRacingID)
     
 
-def runStart(client,SportId):
+def runStrat(client,SportId):
     #Getting Sport Markets
     print("##### == ", "Getting Sport Markets", " == #####")
     mids = getSportMarketsByType(client, SportId, MarketType.Win)
@@ -36,17 +38,24 @@ def runStart(client,SportId):
     print("##### == ", "Program Now Running", " == #####")
     print("##### == ", "Loop Running Every 10 Seconds", " == #####")
     
-    while(RunStrat1):
+
+    while(startLoop):
         time.sleep(10)
-        currTime = getApiTime(client)
-        delList = []
-        for r in timeDict:
-            if (r-currTime).seconds < 120 :
-                runBidExecution(client, timeDict[r])
-                delList.append(r)
-        for tmp in delList:
-            del timeDict[tmp]
-        print("##### == ", "No Markets Found at ",currTime , " == #####")
+        accountBalance = getGBPAvailableFunds(client)
+        # with open('Data/strat_data.json') as json_file:
+        #     data = json.load(json_file)
+        #     RunStrat1 = data['']
+
+        if (RunStrat1):
+            currTime = getApiTime(client)
+            delList = []
+            for r in timeDict:
+                if (r-currTime).seconds < 120 :
+                    runBidExecution(client, timeDict[r])
+                    delList.append(r)
+            for tmp in delList:
+                del timeDict[tmp]
+            print("##### == ", "No Markets Found at ",currTime , " == #####")
 
 
 def runBidExecution(client,bidID):
