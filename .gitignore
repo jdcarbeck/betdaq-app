@@ -1,5 +1,6 @@
 *.pyc
 config.py
+.vscode
 
 # dependencies
 /node_modules
