@@ -20,3 +20,7 @@ python 3 must be installed on machine as well as pip3
 
 ## Use Cases
 This python wrapper is used for querying the betdaq API and the sample application demonstrate the use of the wrapper so that that the user can implement betting stratigeies
+
+### Video
+[![Link for video given bleow](https://img.youtube.com/vi/JE_Myfcy5KQ/0.jpg)](https://www.youtube.com/watch?v=JE_Myfcy5KQ)
+https://www.youtube.com/watch?v=JE_Myfcy5KQ)
